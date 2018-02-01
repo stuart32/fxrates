@@ -1,8 +1,6 @@
 require 'bundler/setup'
 require "fxrates/version"
-require 'open_uri_redirections'
-require 'crack'
-require 'crack/xml'
+require 'date'
 require 'json'
 
 
@@ -14,16 +12,7 @@ end
 
 class ExchangeRate
 
-=begin
-	def readRates
-	 	response = Crack::XML.parse(File.read(open("http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml")))
-	 	File.open("rates.json","w") do |f|
-  		f.write(JSON.pretty_generate(response))
-		end
-	end
-=end
-
-	#Returns the 
+	#Returns the FX data for the date given in @date.
 	def getRatesFromTime(date)
 		file = File.read('rates.json')
 		data = JSON.parse(file)['gesmes:Envelope']['Cube']['Cube']
@@ -42,7 +31,7 @@ class ExchangeRate
 	end
 
 
-
+	#Returns the exchange rate for the curency given in @currency from the data given in @data.
 	def getRate(currency, data)
 		
 			if currency == 'EUR'
@@ -63,7 +52,7 @@ class ExchangeRate
 	end
 
 
-
+	#Returns the exchange rate from @base to @counter on @date.
 	def at(date,base,counter)
 		file = File.read('rates.json')
 		data = getRatesFromTime(date)
@@ -83,7 +72,7 @@ class ExchangeRate
 	
 	end
 
-
+	#Converts @amount in @base into its eqivelent in @counter on @date. 
 	def calcTotal(date,amount,base,counter)
 		return amount * at(date,base,counter)
 	end
@@ -91,5 +80,8 @@ class ExchangeRate
 
 end
 
+r = ExchangeRate.new
+
+puts r.calcTotal("2018-01-29",100,"GBP","USD")
 
 
