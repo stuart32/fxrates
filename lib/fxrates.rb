@@ -14,20 +14,42 @@ class ExchangeRate
 
 	#Returns the FX data for the date given in @date.
 	def getRatesFromTime(date)
-		file = File.read('rates.json')
-		data = JSON.parse(file)['gesmes:Envelope']['Cube']['Cube']
-		found = false
-		for t in data
-			d1 = Date.parse(t['time'])
-			d2 = Date.parse(date)
-			if d1 == d2
-				found = true
-				return t['Cube']
+
+		if file = File.read('rates.json')
+
+			data = JSON.parse(file)['gesmes:Envelope']['Cube']['Cube']
+			found = false
+			for t in data
+				d1 = Date.parse(t['time'])
+				d2 = Date.parse(date)
+				if d1 == d2
+					found = true
+					return t['Cube']
+				end
 			end
-		end
-		if found == false 
-			raise "No data on #{d2}"
-		end
+			if found == false 
+				raise "No data on #{d2}"
+			end
+		else
+			response = Crack::XML.parse(File.read(open("http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml")))
+	 		File.open("lib/rates.json","w") do |f|
+  			f.write(JSON.pretty_generate(response))
+  			getRatesFromTime(data)
+
+  			file = File.read('rates.json')
+  			data = JSON.parse(file)['gesmes:Envelope']['Cube']['Cube']
+			found = false
+			for t in data
+				d1 = Date.parse(t['time'])
+				d2 = Date.parse(date)
+				if d1 == d2
+					found = true
+					return t['Cube']
+				end
+			end
+			if found == false 
+				raise "No data on #{d2}"
+			end
 	end
 
 
