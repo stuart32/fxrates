@@ -79,8 +79,5 @@ class ExchangeRate
 
 end
 
-r = ExchangeRate.new
-
-puts r.calcTotal("2018-01-29",100,"GBP","USD")
 
 
