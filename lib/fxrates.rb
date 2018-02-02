@@ -14,7 +14,12 @@ class ExchangeRate
 
 	#Returns the FX data for the date given in @date.
 	def getRatesFromTime(date)
-		file = File.read('lib/rates.json')
+
+		response = Crack::XML.parse(File.read(open("http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml")))
+	 	File.open("lib/rates.json","w") do |f|
+  		f.write(JSON.pretty_generate(response))
+		
+		file = File.read('./rates.json')
 		data = JSON.parse(file)['gesmes:Envelope']['Cube']['Cube']
 		found = false
 		for t in data
