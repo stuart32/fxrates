@@ -15,7 +15,7 @@ class ExchangeRate
 	#Returns the FX data for the date given in @date.
 	def getRatesFromTime(date)
 
-		if file = File.read('rates.json')
+		if file = File.read('lib/rates.json')
 
 			data = JSON.parse(file)['gesmes:Envelope']['Cube']['Cube']
 			found = false
@@ -36,7 +36,7 @@ class ExchangeRate
   			f.write(JSON.pretty_generate(response))
   			getRatesFromTime(data)
 
-  			file = File.read('rates.json')
+  			file = File.read('lib/rates.json')
   			data = JSON.parse(file)['gesmes:Envelope']['Cube']['Cube']
 			found = false
 			for t in data
@@ -50,6 +50,7 @@ class ExchangeRate
 			if found == false 
 				raise "No data on #{d2}"
 			end
+		end
 	end
 
 
