@@ -54,7 +54,6 @@ class ExchangeRate
 
 	#Returns the exchange rate from @base to @counter on @date.
 	def at(date,base,counter)
-		file = File.read('rates.json')
 		data = getRatesFromTime(date)
 		rate = getRate(counter,data)
 		b = getRate(base, data)
