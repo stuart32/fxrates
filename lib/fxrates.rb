@@ -1,6 +1,9 @@
 require 'bundler/setup'
 require "fxrates/version"
 require 'date'
+require 'open_uri_redirections'
+require 'crack'
+require 'crack/xml'
 require 'json'
 
 
