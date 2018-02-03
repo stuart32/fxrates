@@ -17,7 +17,7 @@ class ExchangeRate
 
 		
 
-		file = File.read('rates.json')
+		file = File.read(Dir.pwd + '/rates.json')
 		data = JSON.parse(file)['gesmes:Envelope']['Cube']['Cube']
 		found = false
 		for t in data
