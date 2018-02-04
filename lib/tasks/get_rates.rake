@@ -4,8 +4,9 @@ desc 'update rates'
 task update_rates: :lib do
   # ... set options if any
 
-
-
+require 'open_uri_redirections'
+require 'crack'
+require 'crack/xml'
 require 'json'
 
 		puts "Updating euro forign exchange refrence rates: " + Time.now.strftime("%d/%m/%Y %H:%M") 

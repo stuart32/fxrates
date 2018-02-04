@@ -1,5 +1,8 @@
 require 'bundler/setup'
 require "fxrates/version"
+require 'open_uri_redirections'
+require 'crack'
+require 'crack/xml'
 require 'date'
 require 'json'
 
@@ -12,11 +15,14 @@ end
 
 class ExchangeRate
 
+	def getRates
+		response = Crack::XML.parse(File.read(open("http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml")))
+	 	File.open(Dir.pwd + "/rates.json","w") do |f|
+  		f.write(JSON.pretty_generate(response))
+  	end
+
 	#Returns the FX data for the date given in @date.
 	def getRatesFromTime(date)
-
-		
-
 		file = File.read(Dir.pwd + '/rates.json')
 		data = JSON.parse(file)['gesmes:Envelope']['Cube']['Cube']
 		found = false
