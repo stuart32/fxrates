@@ -2,6 +2,10 @@ PATH
   remote: .
   specs:
     fxrates (0.1.0)
+      crack
+      json
+      open_uri_redirections
+      whenever
 
 GEM
   remote: https://rubygems.org/

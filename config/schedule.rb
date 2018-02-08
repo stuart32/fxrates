@@ -21,7 +21,12 @@
 
 set :output, "./config/schedual.log"
 
+every 1.minute do
+	rake 'update_rates'
+end
 
+=begin
 every 1.day, at: '17:00 am' do
 	rake 'update_rates'
 end
+=end

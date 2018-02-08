@@ -7,24 +7,18 @@ require 'date'
 require 'json'
 
 
-=begin
-module Fxrates
-  # Your code goes here...
-end
-=end 
-
 class ExchangeRate
-
+	#Stores fx data from ECB to db/rates.json
 	def getRates
 		response = Crack::XML.parse(File.read(open("http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml")))
-	 	File.open(Dir.pwd + "/rates.json","w") do |f|
+	 	File.open(Dir.pwd + "/db/rates.json","w") do |f|
   		f.write(JSON.pretty_generate(response))
   		end
   	end
 
 	#Returns the FX data for the date given in @date.
-	def getRatesFromTime(date)
-		file = File.read(Dir.pwd + '/rates.json')
+	def getRatesFromDate(date)
+		file = File.read('../db/rates.json')
 		data = JSON.parse(file)['gesmes:Envelope']['Cube']['Cube']
 		found = false
 		for t in data
@@ -57,14 +51,28 @@ class ExchangeRate
 				end
 			end
 			if found == false
-				puts "#{currency} is not a valid currency"
+				raise "#{currency} is not a valid currency"
 			end	
 	end
 
 
+
+	#Returns each curreny three letter refrence for a given date with 'EUR' added.
+	def getCurrenciesFromDate( date)
+		cur = Array.new
+		cur[1] = 'EUR';
+		data = getRatesFromDate(date)
+		for t in data
+			cur.push(t['currency'].to_s)
+		end
+		return cur
+	end
+
+
+
 	#Returns the exchange rate from @base to @counter on @date.
 	def at(date,base,counter)
-		data = getRatesFromTime(date)
+		data = getRatesFromDate(date)
 		rate = getRate(counter,data)
 		b = getRate(base, data)
 		if b==nil || rate == nil
@@ -86,8 +94,15 @@ class ExchangeRate
 		return amount * at(date,base,counter)
 	end
 
-
 end
 
+r = ExchangeRate.new
+
+s = r.calcTotal("2018-01-26", 100, "GBP", "HUF")
+puts s
+
+t = r.getCurrenciesFromDate("2018-01-26")
+
+puts t
 
 

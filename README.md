@@ -1,8 +1,8 @@
 # Fxrates
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/fxrates`. To experiment with that code, run `bin/console` for an interactive prompt.
+This gem keeps data on Foreign Exchange rates over the previous 90 days from the Europiean Central Bank (ECB).
 
-TODO: Delete this and the text above, and describe your gem
+The data is updated daily at 15:00.
 
 ## Installation
 
@@ -10,19 +10,37 @@ Add this line to your application's Gemfile:
 
 ```ruby
 gem 'fxrates'
+
+or
+
+gem 'fxrates', :git => 'https://github.com/stuart32/fxrates'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install fxrates
 
 ## Usage
 
-TODO: Write usage instructions here
+Add the cron rake task to your cronfile:
+
+    $ whenever -w
+
+## Method List
+
+getRates() - Stores fx data from ECB to db/rates.json
+
+getRate(currency,date) -  Returns the exchange rate for the curency given in @currency from the data given in @data.
+
+getRatesFromDate(date) - Returns the FX data for the date given in @date.
+
+getCurrencyFromDate(date) - Returns each curreny three letter refrence for a given date with 'EUR' added.
+
+at(date,base,counter) - Returns the exchange rate from @base to @counter on @date.
+
+calcTotal(date,amount,base,counter) - Converts @amount in @base into its eqivelent in @counter on @date. 
+
 
 ## Development
 
@@ -32,5 +50,5 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/stuart32/fxrates.
+Bug reports and pull requests are welcome on GitHub at https://github.com/stuart32 /fxrates.
 # fxrates

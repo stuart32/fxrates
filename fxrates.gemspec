@@ -40,7 +40,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'open_uri_redirections'
   spec.add_runtime_dependency 'crack'
-  #spec.add_runtime_dependency 'crack/xml'
+  spec.add_runtime_dependency 'whenever'
   spec.add_runtime_dependency 'json'
 
 end
